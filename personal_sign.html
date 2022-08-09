@@ -27,6 +27,7 @@
     <script>
 
     let resultlist = {};
+    let resultAcc = "";
     const obscureAddress = (address) => {
       return address.substring(0, 6) + '...'
            + address.substring(address.length - 4, address.length);
@@ -41,7 +42,9 @@
 
       // }, resultlist);
 
+      $('#totalAcc').text(Object.keys(resultlist).length);
       $('#input-message').text(JSON.stringify(resultlist));
+      $('#input-acc').text(resultAcc);
 
     }
 
@@ -187,8 +190,8 @@ Nonce:
                 
                 console.log('PERSONAL SIGNED:' + JSON.stringify(result.result))	;			
                 resultlist[walletAddress]= result.result;
+                resultAcc += walletAddress + "\n";
                 updateResult();
-
 
               })
            });
@@ -383,6 +386,7 @@ Nonce:
                 console.log('PERSONAL SIGNED:' + JSON.stringify(result.result))	;			
                 //alert(JSON.stringify(result.result));
                 resultlist[walletAddress]= result.result;
+                resultAcc += walletAddress + "\n";
                 updateResult();
 
               })
@@ -417,7 +421,14 @@ Nonce:
         copyText.select();
         copyText.setSelectionRange(0, 99999);
         navigator.clipboard.writeText(copyText.value);
-       
+        
+      }
+
+      function clearStorage() {
+        localStorage.clear();
+        resultlist = {};
+        resultAcc='';
+        updateResult();
       }
 
     </script>
@@ -429,21 +440,26 @@ Nonce:
     <div class="row mb-3">
       <div class="col-md-12 g-3">
         <div class="row g-3 align-items-center">
-        <div class="col-auto"><button class="btn btn-primary" id="btn-clear" onclick="localStorage.clear();resultlist = {};">Clear cache (local storage)</button></div>
+        <div class="col-auto"><button class="btn btn-primary" id="btn-clear" onclick="clearStorage()">Clear</button></div>
 
         <div class="col-auto"><button class="btn btn-primary" id="btn-connect" onclick="btn_connect_handleClick()">Connect Wallet</button></div>
 
         <div class="col-auto "><button class="btn btn-primary" id="btn-sign" onclick="btn_sign_handleClick()">Sign Message</button></div>
         <div class="col-auto ">
-            <button class="btn btn-primary" id="btn-copy" onclick="myFunction()">Copy to clipboard
+            <button class="btn btn-primary" id="btn-copy" onclick="myFunction()">Copy Resource
             </button>
         </div>
       </div>
       </div>
     </div>
     <div class="row mb-3">
-      <div class="col-md-12">
+      <div class="col-md-12" style="display: none;">
         <textarea id="input-message" rows="10" cols="100" cols="145" rows="15" style="font-size: 11px;">result se hien thi tai day </textarea>
+      </div>
+      <div class="col-md-12">
+        Tong So Acc: <span id="totalAcc">0</span>
+        <br>
+        <textarea id="input-acc" rows="10" cols="100" cols="145" rows="15" style="font-size: 11px;"></textarea>
       </div>
     </div>
 
