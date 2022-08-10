@@ -420,7 +420,14 @@ Nonce:
         var copyText = document.getElementById("input-message");
         copyText.select();
         copyText.setSelectionRange(0, 99999);
-        navigator.clipboard.writeText(copyText.value);
+        navigator.clipboard
+          .writeText(copyText.value)
+          .then(() => {
+            alert("successfully copied");
+          })
+          .catch(() => {
+            alert("something went wrong");
+          });
         
       }
 
@@ -466,5 +473,3 @@ Nonce:
 </body>
 
 </html>
-
-
